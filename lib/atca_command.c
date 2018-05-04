@@ -788,9 +788,9 @@ void deleteATCACommand(ATCACommand *ca_cmd)    // destructor
  * \param[out] crc_le  Pointer to the place where the two-bytes of CRC will be
  *                     returned in little-endian byte order.
  */
-void atCRC(size_t length, const uint8_t *data, uint8_t *crc_le)
+void atCRC(uint32_t length, const uint8_t *data, uint8_t *crc_le)
 {
-    size_t counter;
+    uint32_t counter;
     uint16_t crc_register = 0;
     uint16_t polynom = 0x8005;
     uint8_t shift_register;

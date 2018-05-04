@@ -184,7 +184,7 @@ void deleteATCACommand(ATCACommand *);        // destructor
 /*---- end of ATCACommand ----*/
 
 // command helpers
-void atCRC(size_t length, const uint8_t *data, uint8_t *crc_le);
+void atCRC(uint32_t length, const uint8_t *data, uint8_t *crc_le);
 void atCalcCrc(ATCAPacket *pkt);
 ATCA_STATUS atCheckCrc(const uint8_t *response);
 
