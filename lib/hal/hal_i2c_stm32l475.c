@@ -58,15 +58,12 @@ ATCA_STATUS hal_i2c_receive(ATCAIface iface, uint8_t *rxdata,
 }
 ATCA_STATUS hal_i2c_wake(ATCAIface iface) {
 
-  ATCAIfaceCfg *cfg = atgetifacecfg(iface);
   uint8_t data[4], expected[4] = {0x04, 0x11, 0x33, 0x43};
   uint16_t data_size = 4;
   do {
     HAL_I2C_Master_Transmit(&hi2c3, 0xC0, 0x00, 1, 1000);
   } while (HAL_I2C_GetError(&hi2c3) == HAL_I2C_ERROR_AF);
-  atca_delay_ms(((uint32_t)cfg->wake_delay + (1000 - 1)) /
-                1000); // wait tWHI + tWLO which is configured based on device
-                       // type and configuration structure
+  
   hal_i2c_receive(iface, data, &data_size);
 
   if (memcmp(data, expected, 4) != 0) {
