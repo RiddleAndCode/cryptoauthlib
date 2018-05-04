@@ -1,12 +1,11 @@
 
 #ifndef HAL_STM32L475_I2C_H_
 #define HAL_STM32L475_I2C_H_
+#include "atca_hal.h"
 #include "atca_iface.h"
 #include "atca_status.h"
 #include "stm32l4xx_hal.h"
-#include "atca_hal.h"
 #include <stdlib.h>
-
 
 ATCA_STATUS hal_i2c_init(void *hal, ATCAIfaceCfg *cfg);
 ATCA_STATUS hal_i2c_post_init(ATCAIface iface);

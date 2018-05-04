@@ -42,12 +42,24 @@
 
 #include "atca_hal.h"
 #include "cryptoauthlib.h"
+#ifdef ATCA_COMPILE
 #include "hal_i2c_stm32l475.h"
-
-#define ATCA_HAL_I2C
-void atca_delay_us(uint32_t delay) { HAL_Delay(0); }
-void atca_delay_10us(uint32_t delay) { HAL_Delay(0); }
-void atca_delay_ms(uint32_t delay) { HAL_Delay(0); }
+#endif
+void atca_delay_us(uint32_t delay) {
+#ifdef ATCA_COMPILE
+  HAL_Delay(0);
+#endif
+}
+void atca_delay_10us(uint32_t delay) {
+#ifdef ATCA_COMPILE
+  HAL_Delay(0);
+#endif
+}
+void atca_delay_ms(uint32_t delay) {
+#ifdef ATCA_COMPILE
+  HAL_Delay(0);
+#endif
+}
 
 /** \brief Standard HAL API for ATCA to initialize a physical interface
  * \param[in] cfg pointer to ATCAIfaceCfg object
@@ -56,11 +68,13 @@ void atca_delay_ms(uint32_t delay) { HAL_Delay(0); }
  */
 
 ATCA_STATUS hal_iface_init(ATCAIfaceCfg *cfg, ATCAHAL_t *hal) {
-  // Because C isn't a real object oriented language or dynamically typed, some
+  // Because C isn't a real object oriented language or dynamically typed,
+  // some
   // switch in the overall system is unavoidable
   // The key here is to provide the flexibility to include just the types of
   // interfaces you want/need without breaking the
-  // object model.  The former is needed so in an embedded, constrained memory
+  // object model.  The former is needed so in an embedded, constrained
+  // memory
   // environment, you don't have to pay the price
   // (in terms of memory) for interfaces you don't use in your application.
   ATCA_STATUS status = ATCA_COMM_FAIL;
@@ -155,7 +169,8 @@ ATCA_STATUS hal_iface_init(ATCAIfaceCfg *cfg, ATCAHAL_t *hal) {
   return status;
 }
 
-/** \brief releases a physical interface, HAL knows how to interpret hal_data
+/** \brief releases a physical interface, HAL knows how to interpret
+ * hal_data
  * \param[in] iface_type - the type of physical interface to release
  * \param[in] hal_data - pointer to opaque hal data maintained by HAL
  * implementation for this interface type

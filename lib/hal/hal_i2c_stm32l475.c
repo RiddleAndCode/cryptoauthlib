@@ -31,11 +31,9 @@ ATCA_STATUS hal_i2c_send(ATCAIface iface, uint8_t *txdata, int txlength) {
   // this covers devices such as ATSHA204A and ATECCx08A that require a word
   // address value pre-pended to the packet
 
-  
   uint32_t status = HAL_ERROR;
   txdata[0] = 0x03;
   txlength++;
-  
 
   do {
     status = HAL_I2C_Master_Transmit(&hi2c3, 0xC0, txdata, txlength, 1000);
@@ -48,8 +46,6 @@ ATCA_STATUS hal_i2c_send(ATCAIface iface, uint8_t *txdata, int txlength) {
 }
 ATCA_STATUS hal_i2c_receive(ATCAIface iface, uint8_t *rxdata,
                             uint16_t *rxlength) {
-  ATCAIfaceCfg *cfg = atgetifacecfg(iface);
-  int retries = cfg->rx_retries;
   uint32_t status = HAL_ERROR;
 
   do {

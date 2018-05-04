@@ -38,7 +38,6 @@
 #include "atca_start_iface.h"
 #include "atca_status.h"
 
-
 /** \defgroup hal_ Hardware abstraction layer (hal_)
  *
  * \brief
@@ -92,7 +91,7 @@ extern ATCA_STATUS hal_iface_release(ATCAIfaceType, void *hal_data);
 
 // At least one of these symbols will be defined in the project or makefile for
 // each application
-#define ATCA_HAL_I2C
+//#define ATCA_HAL_I2C
 //#define ATCA_HAL_SWI
 //#define ATCA_HAL_SPI
 //#define ATCA_HAL_UART
