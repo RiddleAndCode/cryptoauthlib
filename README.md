@@ -1,5 +1,8 @@
 CryptoAuthLib - Microchip CryptoAuthentication Library
 ====================================================
+RiddleAndCode Notes
+------------------------
+Added i2c HAL for stm32l475.
 
 Introduction
 ------------------------
