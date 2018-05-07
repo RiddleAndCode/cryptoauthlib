@@ -423,7 +423,7 @@ char base64Index(char c, const uint8_t *rules) {
  * \param[in] rules  base64 ruleset to use
  * \return the base 64 character of the given index
  */
-char base64Char(char id, const uint8_t *rules) {
+char base64Char(signed char id, const uint8_t *rules) {
   if (id >= 0 && (id < 26)) {
     return (char)('A' + id);
   }

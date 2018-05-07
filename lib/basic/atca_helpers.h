@@ -45,15 +45,19 @@
 extern "C" {
 #endif
 
-ATCA_STATUS atcab_printbin(uint8_t* binary, int bin_len, bool add_space);
-ATCA_STATUS atcab_bin2hex(const uint8_t* binary, int bin_len, char* ascii_hex, int* ascii_hex_len);
-ATCA_STATUS atcab_bin2hex_(const uint8_t* binary, int bin_len, char* ascii_hex, int* ascii_hex_len, bool add_space);
-ATCA_STATUS atcab_hex2bin(const char* ascii_hex, int ascii_hex_len, uint8_t* binary, int* bin_len);
-ATCA_STATUS atcab_printbin_sp(uint8_t* binary, int bin_len);
-ATCA_STATUS atcab_printbin_label(const char* label, uint8_t* binary, int bin_len);
+ATCA_STATUS atcab_printbin(uint8_t *binary, int bin_len, bool add_space);
+ATCA_STATUS atcab_bin2hex(const uint8_t *binary, int bin_len, char *ascii_hex,
+                          int *ascii_hex_len);
+ATCA_STATUS atcab_bin2hex_(const uint8_t *binary, int bin_len, char *ascii_hex,
+                           int *ascii_hex_len, bool add_space);
+ATCA_STATUS atcab_hex2bin(const char *ascii_hex, int ascii_hex_len,
+                          uint8_t *binary, int *bin_len);
+ATCA_STATUS atcab_printbin_sp(uint8_t *binary, int bin_len);
+ATCA_STATUS atcab_printbin_label(const char *label, uint8_t *binary,
+                                 int bin_len);
 
-
-ATCA_STATUS packHex(const char* ascii_hex, int ascii_hex_len, char* packed_hex, int* packed_len);
+ATCA_STATUS packHex(const char *ascii_hex, int ascii_hex_len, char *packed_hex,
+                    int *packed_len);
 bool isDigit(char c);
 bool isWhiteSpace(char c);
 bool isAlpha(char c);
@@ -61,21 +65,29 @@ bool isHexAlpha(char c);
 bool isHex(char c);
 bool isHexDigit(char c);
 
-ATCA_STATUS packBase64(const char* ascii_base64, int ascii_base64_len, char* packed_base64, int* packed_len, const uint8_t * rules);
-bool isBase64(char c, const uint8_t * rules);
-bool isBase64Digit(char c, const uint8_t * rules);
-char base64Index(char c, const uint8_t * rules);
-char base64Char(char id, const uint8_t * rules);
+ATCA_STATUS packBase64(const char *ascii_base64, int ascii_base64_len,
+                       char *packed_base64, int *packed_len,
+                       const uint8_t *rules);
+bool isBase64(char c, const uint8_t *rules);
+bool isBase64Digit(char c, const uint8_t *rules);
+char base64Index(char c, const uint8_t *rules);
+char base64Char(signed char id, const uint8_t *rules);
 
 extern uint8_t atcab_b64rules_default[4];
 extern uint8_t atcab_b64rules_mime[4];
 extern uint8_t atcab_b64rules_urlsafe[4];
 
-ATCA_STATUS atcab_base64decode_(const char* encoded, size_t encoded_len, uint8_t* byte_array, size_t* array_len, const uint8_t * rules);
-ATCA_STATUS atcab_base64decode(const char* encoded, size_t encoded_len, uint8_t* byte_array, size_t* array_len);
+ATCA_STATUS atcab_base64decode_(const char *encoded, size_t encoded_len,
+                                uint8_t *byte_array, size_t *array_len,
+                                const uint8_t *rules);
+ATCA_STATUS atcab_base64decode(const char *encoded, size_t encoded_len,
+                               uint8_t *byte_array, size_t *array_len);
 
-ATCA_STATUS atcab_base64encode_(const uint8_t* byte_array, size_t array_len, char* encoded, size_t* encoded_len, const uint8_t * rules);
-ATCA_STATUS atcab_base64encode(const uint8_t* byte_array, size_t array_len, char* encoded, size_t* encoded_len);
+ATCA_STATUS atcab_base64encode_(const uint8_t *byte_array, size_t array_len,
+                                char *encoded, size_t *encoded_len,
+                                const uint8_t *rules);
+ATCA_STATUS atcab_base64encode(const uint8_t *byte_array, size_t array_len,
+                               char *encoded, size_t *encoded_len);
 
 #ifdef __cplusplus
 }

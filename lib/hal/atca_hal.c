@@ -45,9 +45,9 @@
 #ifdef ATCA_COMPILE
 #include "hal_i2c_stm32l475.h"
 #endif
-void atca_delay_us(uint32_t delay) {}
-void atca_delay_10us(uint32_t delay) {}
-void atca_delay_ms(uint32_t delay) {}
+void atca_delay_us(uint32_t delay) { ((void)delay); }
+void atca_delay_10us(uint32_t delay) { ((void)delay); }
+void atca_delay_ms(uint32_t delay) { ((void)delay); }
 
 /** \brief Standard HAL API for ATCA to initialize a physical interface
  * \param[in] cfg pointer to ATCAIfaceCfg object

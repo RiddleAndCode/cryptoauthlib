@@ -8,13 +8,20 @@ extern I2C_HandleTypeDef hi2c3;
  * \param[in] cfg  pointer to interface configuration
  * \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS hal_i2c_init(void *hal, ATCAIfaceCfg *cfg) { return ATCA_SUCCESS; }
+ATCA_STATUS hal_i2c_init(void *hal, ATCAIfaceCfg *cfg) {
+  ((void)hal);
+  ((void)cfg);
+  return ATCA_SUCCESS;
+}
 
 /** \brief HAL implementation of I2C post init
  * \param[in] iface  instance
  * \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS hal_i2c_post_init(ATCAIface iface) { return ATCA_SUCCESS; }
+ATCA_STATUS hal_i2c_post_init(ATCAIface iface) {
+  ((void)iface);
+  return ATCA_SUCCESS;
+}
 
 /** \brief HAL implementation of I2C send over ASF
  * \param[in] iface     instance
@@ -30,7 +37,7 @@ ATCA_STATUS hal_i2c_send(ATCAIface iface, uint8_t *txdata, int txlength) {
   // command need a different hal_i2c_send and wire it up instead of this one
   // this covers devices such as ATSHA204A and ATECCx08A that require a word
   // address value pre-pended to the packet
-
+  ((void)iface);
   uint32_t status = HAL_ERROR;
   txdata[0] = 0x03;
   txlength++;
@@ -47,7 +54,7 @@ ATCA_STATUS hal_i2c_send(ATCAIface iface, uint8_t *txdata, int txlength) {
 ATCA_STATUS hal_i2c_receive(ATCAIface iface, uint8_t *rxdata,
                             uint16_t *rxlength) {
   uint32_t status = HAL_ERROR;
-
+  ((void)iface);
   do {
     status = HAL_I2C_Master_Receive(&hi2c3, 0xC0, rxdata, *rxlength, 1000);
   } while (HAL_I2C_GetError(&hi2c3) == HAL_I2C_ERROR_AF);
@@ -57,13 +64,13 @@ ATCA_STATUS hal_i2c_receive(ATCAIface iface, uint8_t *rxdata,
   return ATCA_SUCCESS;
 }
 ATCA_STATUS hal_i2c_wake(ATCAIface iface) {
-
+  ((void)iface);
   uint8_t data[4], expected[4] = {0x04, 0x11, 0x33, 0x43};
   uint16_t data_size = 4;
   do {
     HAL_I2C_Master_Transmit(&hi2c3, 0xC0, 0x00, 1, 1000);
   } while (HAL_I2C_GetError(&hi2c3) == HAL_I2C_ERROR_AF);
-  
+
   hal_i2c_receive(iface, data, &data_size);
 
   if (memcmp(data, expected, 4) != 0) {
@@ -75,7 +82,7 @@ ATCA_STATUS hal_i2c_wake(ATCAIface iface) {
 ATCA_STATUS hal_i2c_idle(ATCAIface iface) {
   uint8_t data[4];
   data[0] = 0x02; // idle word address value
-
+  ((void)iface);
   do {
     HAL_I2C_Master_Transmit(&hi2c3, 0xC0, data, 1, 1000);
   } while (HAL_I2C_GetError(&hi2c3) == HAL_I2C_ERROR_AF);
@@ -84,14 +91,21 @@ ATCA_STATUS hal_i2c_idle(ATCAIface iface) {
 ATCA_STATUS hal_i2c_sleep(ATCAIface iface) {
   uint8_t data[4];
   data[0] = 0x01; // sleep word address value
+  ((void)iface);
 
   do {
     HAL_I2C_Master_Transmit(&hi2c3, 0xC0, data, 1, 1000);
   } while (HAL_I2C_GetError(&hi2c3) == HAL_I2C_ERROR_AF);
   return ATCA_SUCCESS;
 }
-ATCA_STATUS hal_i2c_release(void *hal_data) { return ATCA_SUCCESS; }
+ATCA_STATUS hal_i2c_release(void *hal_data) {
+  ((void)hal_data);
+  return ATCA_SUCCESS;
+}
 ATCA_STATUS hal_i2c_discover_buses(int i2c_buses[], int max_buses) {
+  ((void)max_buses);
+  ((void)i2c_buses);
+
   return ATCA_SUCCESS;
 }
 ATCA_STATUS hal_i2c_discover_devices(int bus_num, ATCAIfaceCfg *cfg,
@@ -104,6 +118,8 @@ ATCA_STATUS hal_i2c_discover_devices(int bus_num, ATCAIfaceCfg *cfg,
                               .wake_delay = 1500,
                               .rx_retries = 3};
   hal_i2c_init(NULL, &discoverCfg);
-
+  ((void)found);
+  ((void)bus_num);
+  ((void)cfg);
   return ATCA_SUCCESS;
 }
