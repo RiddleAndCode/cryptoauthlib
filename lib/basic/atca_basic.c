@@ -49,7 +49,8 @@ ATCADevice _gDevice = NULL;
  * \param[out] ver_str ptr to space to receive version string
  * \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS atcab_version(char *ver_str) {
+ATCA_STATUS atcab_version(char *ver_str)
+{
   strcpy(ver_str, atca_version);
   return ATCA_SUCCESS;
 }
@@ -62,7 +63,8 @@ ATCA_STATUS atcab_version(char *ver_str) {
  * usually a predefined configuration found in atca_cfgs.h
  *  \return    ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS atcab_init(ATCAIfaceCfg *cfg) {
+ATCA_STATUS atcab_init(ATCAIfaceCfg *cfg)
+{
   ATCA_STATUS status = ATCA_GEN_FAIL;
 
   if (_gDevice) // if there's already a device created, release it
@@ -72,14 +74,17 @@ ATCA_STATUS atcab_init(ATCAIfaceCfg *cfg) {
   _gDevice = newATCADevice(cfg);
 
   if ((_gDevice == NULL) || (_gDevice->mIface == NULL) ||
-      (_gDevice->mCommands == NULL)) {
+      (_gDevice->mCommands == NULL))
+  {
     return ATCA_GEN_FAIL; // Device creation failed
   }
-  if (cfg->devtype == ATECC608A) {
+  if (cfg->devtype == ATECC608A)
+  {
 
     if ((status = atcab_read_bytes_zone(
              ATCA_ZONE_CONFIG, 0, ATCA_CHIPMODE_OFFSET,
-             &_gDevice->mCommands->clock_divider, 1)) != ATCA_SUCCESS) {
+             &_gDevice->mCommands->clock_divider, 1)) != ATCA_SUCCESS)
+    {
       return status;
     }
     _gDevice->mCommands->clock_divider &= ATCA_CHIPMODE_CLOCK_DIV_MASK;
@@ -94,17 +99,21 @@ ATCA_STATUS atcab_init(ATCAIfaceCfg *cfg) {
  *                        crypto device instance
  *  \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS atcab_init_device(ATCADevice ca_device) {
-  if (ca_device == NULL) {
+ATCA_STATUS atcab_init_device(ATCADevice ca_device)
+{
+  if (ca_device == NULL)
+  {
     return ATCA_BAD_PARAM;
   }
 
-  if (atGetCommands(ca_device) == NULL || atGetIFace(ca_device) == NULL) {
+  if (atGetCommands(ca_device) == NULL || atGetIFace(ca_device) == NULL)
+  {
     return ATCA_GEN_FAIL;
   }
 
   // if there's already a device created, release it
-  if (_gDevice) {
+  if (_gDevice)
+  {
     atcab_release();
   }
 
@@ -117,7 +126,8 @@ ATCA_STATUS atcab_init_device(ATCADevice ca_device) {
  *  This must be called in order to release or free up the interface.
  *  \return Returns ATCA_SUCCESS .
  */
-ATCA_STATUS atcab_release(void) {
+ATCA_STATUS atcab_release(void)
+{
   deleteATCADevice(&_gDevice);
   return ATCA_SUCCESS;
 }
@@ -130,8 +140,10 @@ ATCADevice atcab_get_device(void) { return _gDevice; }
 /** \brief wakeup the CryptoAuth device
  *  \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS atcab_wakeup(void) {
-  if (_gDevice == NULL) {
+ATCA_STATUS atcab_wakeup(void)
+{
+  if (_gDevice == NULL)
+  {
     return ATCA_GEN_FAIL;
   }
 
@@ -141,8 +153,10 @@ ATCA_STATUS atcab_wakeup(void) {
 /** \brief idle the CryptoAuth device
  *  \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS atcab_idle(void) {
-  if (_gDevice == NULL) {
+ATCA_STATUS atcab_idle(void)
+{
+  if (_gDevice == NULL)
+  {
     return ATCA_GEN_FAIL;
   }
 
@@ -152,8 +166,10 @@ ATCA_STATUS atcab_idle(void) {
 /** \brief invoke sleep on the CryptoAuth device
  *  \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS atcab_sleep(void) {
-  if (_gDevice == NULL) {
+ATCA_STATUS atcab_sleep(void)
+{
+  if (_gDevice == NULL)
+  {
     return ATCA_GEN_FAIL;
   }
 
@@ -173,23 +189,28 @@ ATCA_STATUS atcab_sleep(void) {
  * \return ATCA_SUCCESS on success, otherwise an error code.
  */
 
-ATCA_STATUS atcab_cfg_discover(ATCAIfaceCfg cfg_array[], int max_ifaces) {
+ATCA_STATUS atcab_cfg_discover(ATCAIfaceCfg cfg_array[], int max_ifaces)
+{
   int iface_num = 0, i;
   int found = 0;
 
   ((void)(iface_num));
   ((void)(i));
   ((void)(found));
+  ((void)(cfg_array));
+  ((void)(max_ifaces));
 
-// this cumulatively gathers all the interfaces enabled by #defines
+  // this cumulatively gathers all the interfaces enabled by #defines
 
 #ifdef ATCA_HAL_I2C
   int i2c_buses[MAX_BUSES];
   memset(i2c_buses, -1, sizeof(i2c_buses));
   hal_i2c_discover_buses(i2c_buses, MAX_BUSES);
 
-  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++) {
-    if (i2c_buses[i] != -1) {
+  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++)
+  {
+    if (i2c_buses[i] != -1)
+    {
       hal_i2c_discover_devices(i2c_buses[i], &cfg_array[iface_num], &found);
       iface_num += found;
     }
@@ -200,8 +221,10 @@ ATCA_STATUS atcab_cfg_discover(ATCAIfaceCfg cfg_array[], int max_ifaces) {
   int swi_buses[MAX_BUSES];
   memset(swi_buses, -1, sizeof(swi_buses));
   hal_swi_discover_buses(swi_buses, MAX_BUSES);
-  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++) {
-    if (swi_buses[i] != -1) {
+  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++)
+  {
+    if (swi_buses[i] != -1)
+    {
       hal_swi_discover_devices(swi_buses[i], &cfg_array[iface_num], &found);
       iface_num += found;
     }
@@ -213,8 +236,10 @@ ATCA_STATUS atcab_cfg_discover(ATCAIfaceCfg cfg_array[], int max_ifaces) {
   int uart_buses[MAX_BUSES];
   memset(uart_buses, -1, sizeof(uart_buses));
   hal_uart_discover_buses(uart_buses, MAX_BUSES);
-  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++) {
-    if (uart_buses[i] != -1) {
+  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++)
+  {
+    if (uart_buses[i] != -1)
+    {
       hal_uart_discover_devices(uart_buses[i], &cfg_array[iface_num], &found);
       iface_num += found;
     }
@@ -225,8 +250,10 @@ ATCA_STATUS atcab_cfg_discover(ATCAIfaceCfg cfg_array[], int max_ifaces) {
   int cdc_buses[MAX_BUSES];
   memset(cdc_buses, -1, sizeof(cdc_buses));
   hal_kit_cdc_discover_buses(cdc_buses, MAX_BUSES);
-  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++) {
-    if (cdc_buses[i] != -1) {
+  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++)
+  {
+    if (cdc_buses[i] != -1)
+    {
       hal_kit_cdc_discover_devices(cdc_buses[i], &cfg_array[iface_num++],
                                    &found);
       iface_num += found;
@@ -238,8 +265,10 @@ ATCA_STATUS atcab_cfg_discover(ATCAIfaceCfg cfg_array[], int max_ifaces) {
   int hid_buses[MAX_BUSES];
   memset(hid_buses, -1, sizeof(hid_buses));
   hal_kit_hid_discover_buses(hid_buses, MAX_BUSES);
-  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++) {
-    if (hid_buses[i] != -1) {
+  for (i = 0; i < MAX_BUSES && iface_num < max_ifaces; i++)
+  {
+    if (hid_buses[i] != -1)
+    {
       hal_kit_hid_discover_devices(hid_buses[i], &cfg_array[iface_num++],
                                    &found);
       iface_num += found;
@@ -267,26 +296,32 @@ ATCA_STATUS _atcab_exit(void) { return atcab_idle(); }
  *  \return ATCA_SUCCESS on success, otherwise an error code.
  */
 ATCA_STATUS atcab_get_addr(uint8_t zone, uint16_t slot, uint8_t block,
-                           uint8_t offset, uint16_t *addr) {
+                           uint8_t offset, uint16_t *addr)
+{
   ATCA_STATUS status = ATCA_SUCCESS;
   uint8_t mem_zone = zone & 0x03;
 
-  if (addr == NULL) {
+  if (addr == NULL)
+  {
     return ATCA_BAD_PARAM;
   }
   if ((mem_zone != ATCA_ZONE_CONFIG) && (mem_zone != ATCA_ZONE_DATA) &&
-      (mem_zone != ATCA_ZONE_OTP)) {
+      (mem_zone != ATCA_ZONE_OTP))
+  {
     return ATCA_BAD_PARAM;
   }
-  do {
+  do
+  {
     // Initialize the addr to 00
     *addr = 0;
     // Mask the offset
     offset = offset & (uint8_t)0x07;
-    if ((mem_zone == ATCA_ZONE_CONFIG) || (mem_zone == ATCA_ZONE_OTP)) {
+    if ((mem_zone == ATCA_ZONE_CONFIG) || (mem_zone == ATCA_ZONE_OTP))
+    {
       *addr = block << 3;
       *addr |= offset;
-    } else // ATCA_ZONE_DATA
+    }
+    else // ATCA_ZONE_DATA
     {
       *addr = slot << 3;
       *addr |= offset;
@@ -306,15 +341,19 @@ ATCA_STATUS atcab_get_addr(uint8_t zone, uint16_t slot, uint8_t block,
  *
  * \return ATCA_SUCCESS on success, otherwise an error code.
  */
-ATCA_STATUS atcab_get_zone_size(uint8_t zone, uint16_t slot, size_t *size) {
+ATCA_STATUS atcab_get_zone_size(uint8_t zone, uint16_t slot, size_t *size)
+{
   ATCA_STATUS status = ATCA_SUCCESS;
 
-  if (size == NULL) {
+  if (size == NULL)
+  {
     return ATCA_BAD_PARAM;
   }
 
-  if (_gDevice->mIface->mIfaceCFG->devtype == ATSHA204A) {
-    switch (zone) {
+  if (_gDevice->mIface->mIfaceCFG->devtype == ATSHA204A)
+  {
+    switch (zone)
+    {
     case ATCA_ZONE_CONFIG:
       *size = 88;
       break;
@@ -328,8 +367,11 @@ ATCA_STATUS atcab_get_zone_size(uint8_t zone, uint16_t slot, size_t *size) {
       status = ATCA_BAD_PARAM;
       break;
     }
-  } else {
-    switch (zone) {
+  }
+  else
+  {
+    switch (zone)
+    {
     case ATCA_ZONE_CONFIG:
       *size = 128;
       break;
@@ -337,13 +379,20 @@ ATCA_STATUS atcab_get_zone_size(uint8_t zone, uint16_t slot, size_t *size) {
       *size = 64;
       break;
     case ATCA_ZONE_DATA:
-      if (slot < 8) {
+      if (slot < 8)
+      {
         *size = 36;
-      } else if (slot == 8) {
+      }
+      else if (slot == 8)
+      {
         *size = 416;
-      } else if (slot < 16) {
+      }
+      else if (slot < 16)
+      {
         *size = 72;
-      } else {
+      }
+      else
+      {
         status = ATCA_BAD_PARAM;
       }
       break;

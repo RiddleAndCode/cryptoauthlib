@@ -37,7 +37,10 @@
  * return ATCA_UNIMPLEMENTED , as the function is not implemented
  */
 
-int atcac_sw_random(uint8_t* data, size_t data_size)
+int atcac_sw_random(uint8_t *data, size_t data_size)
 {
+    (void)(data);
+    (void)(data_size);
+
     return ATCA_UNIMPLEMENTED;
 }
