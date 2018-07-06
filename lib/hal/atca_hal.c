@@ -42,9 +42,7 @@
 
 #include "atca_hal.h"
 #include "cryptoauthlib.h"
-#ifdef ATCA_COMPILE
-#include "hal_i2c_stm32l475.h"
-#endif
+
 void atca_delay_us(uint32_t delay) { ((void)delay); }
 void atca_delay_10us(uint32_t delay) { ((void)delay); }
 void atca_delay_ms(uint32_t delay) { ((void)delay); }
@@ -55,7 +53,8 @@ void atca_delay_ms(uint32_t delay) { ((void)delay); }
  *  \return ATCA_SUCCESS on success, otherwise an error code.
  */
 
-ATCA_STATUS hal_iface_init(ATCAIfaceCfg *cfg, ATCAHAL_t *hal) {
+ATCA_STATUS hal_iface_init(ATCAIfaceCfg *cfg, ATCAHAL_t *hal)
+{
   // Because C isn't a real object oriented language or dynamically typed,
   // some
   // switch in the overall system is unavoidable
@@ -67,7 +66,8 @@ ATCA_STATUS hal_iface_init(ATCAIfaceCfg *cfg, ATCAHAL_t *hal) {
   // (in terms of memory) for interfaces you don't use in your application.
   ATCA_STATUS status = ATCA_COMM_FAIL;
 
-  switch (cfg->iface_type) {
+  switch (cfg->iface_type)
+  {
   case ATCA_I2C_IFACE:
 #ifdef ATCA_HAL_I2C
     hal->halinit = &hal_i2c_init;
@@ -165,10 +165,12 @@ ATCA_STATUS hal_iface_init(ATCAIfaceCfg *cfg, ATCAHAL_t *hal) {
  *  \return ATCA_SUCCESS on success, otherwise an error code.
  */
 
-ATCA_STATUS hal_iface_release(ATCAIfaceType iface_type, void *hal_data) {
+ATCA_STATUS hal_iface_release(ATCAIfaceType iface_type, void *hal_data)
+{
   ATCA_STATUS status = ATCA_GEN_FAIL;
 
-  switch (iface_type) {
+  switch (iface_type)
+  {
   case ATCA_I2C_IFACE:
 #ifdef ATCA_HAL_I2C
     status = hal_i2c_release(hal_data);
