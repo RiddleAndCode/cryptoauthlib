@@ -1,6 +1,8 @@
 node('builder'){
     docker.image('riddleandcode/wallet-builder').inside('--privileged') {
         checkout scm
+        version = readFile "${env.WORKSPACE}/VERSION"
+        versionEscaped = sh "echo version | tr -d '\n'"
         stage('Generating build') {
             sh 'mkdir -p build && cd build && cmake ../ -DTARGET_GROUP=all -DSTATIC_ANALYSIS=1  '
         }
@@ -21,6 +23,26 @@ node('builder'){
                 cobertura coberturaReportFile: 'coverage.xml'
             }
             */
+            stage("Upload to Artifactory"){
+                rtUpload (
+                    serverId: "ArtifactoryOSS", // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
+                    spec: """{
+                        "files": [
+                            {
+                                "pattern": "build/lib/libcryptoauth.a",
+                                "target": "generic-local/release-candidate/cryptoauthlib/$versionEscaped/libcryptoauth.a"
+                            },
+                            {
+                                "pattern": "build/lib/libcryptoauth.so",
+                                "target": "generic-local/release-candidate/cryptoauthlib/$versionEscaped/libcryptoauth.so"
+                            }
+                        ]
+                    }"""
+                )
+                rtPublishBuildInfo (
+                    serverId: "ArtifactoryOSS"
+                )
+           }
         }
     }
 }
