@@ -1,8 +1,7 @@
 node('builder'){
     docker.image('riddleandcode/wallet-builder').inside('--privileged') {
         checkout scm
-        versionEscaped = readFile "${env.WORKSPACE}/version"
-        //versionEscaped = sh "cat version | tr -d '\n'"
+        version = readFile "${env.WORKSPACE}/version"
         stage('Generating build') {
             sh 'mkdir -p build && cd build && cmake ../ '
         }
@@ -30,11 +29,11 @@ node('builder'){
                         "files": [
                             {
                                 "pattern": "lib/libcryptoauth.a",
-                                "target": "generic-local/release-candidate/cryptoauthlib/0.9.3/libcryptoauth.a"
+                                "target": "generic-local/release-candidate/cryptoauthlib/${version}/libcryptoauth.a"
                             },
                             {
                                 "pattern": "lib/libcryptoauthdyn.so",
-                                "target": "generic-local/release-candidate/cryptoauthlib/0.9.3/libcryptoauth.so"
+                                "target": "generic-local/release-candidate/cryptoauthlib/${version}/libcryptoauth.so"
                             }
                         ]
                     }"""
