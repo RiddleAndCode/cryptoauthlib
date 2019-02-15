@@ -3,10 +3,10 @@ node('builder'){
         checkout scm
         version = readFile "${env.WORKSPACE}/version"
         stage('Generating build') {
-            sh 'mkdir -p build && cd build && cmake ../ '
+            sh 'mkdir -p build && cd build && cmake ../ -DCMAKE_TOOLCHAIN_FILE=/opt/toolchain-rpi.cmake -DTARGET_GROUP=all'
         }
         stage('Coding Guideline') {
-                sh 'astyle "lib/*.c" "lib/*.h" "lib/hal/*.c" "lib/hal/*.h" "lib/basic/*.c" "lib/basic/*.h"  "lib/host/*.c" "lib/host/*.h" "test/*.c" "test/*.h" --style=google -s2'
+                //sh 'astyle "lib/*.c" "lib/*.h" "lib/hal/*.c" "lib/hal/*.h" "lib/basic/*.c" "lib/basic/*.h"  "lib/host/*.c" "lib/host/*.h" "test/*.c" "test/*.h" --style=google -s2'
                 //sh 'echo \'if [ $(find . -iname "*.orig" | wc -l) -eq 0 ]; then echo "According to guideline."; else echo "Not according to guideline" && exit 1; fi\' > guide && sh guide'
         }
         dir('build')
