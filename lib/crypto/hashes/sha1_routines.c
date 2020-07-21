@@ -63,7 +63,7 @@ void CL_hashInit(CL_HashContext *ctx)
  * \param[in] nbytes  Data size in bytes
  */
 
-
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 
 void CL_hashUpdate(CL_HashContext *ctx, const U8 *src, int nbytes)
@@ -138,7 +138,7 @@ void CL_hashUpdate(CL_HashContext *ctx, const U8 *src, int nbytes)
     }
 }
 
-
+#pragma GCC diagnostic pop
 
 /** \brief Complete the SHA1 hash in software and return the digest.
  * \param[in]  ctx   Hash context
